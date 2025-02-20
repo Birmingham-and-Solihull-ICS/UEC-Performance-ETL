@@ -52,3 +52,5 @@ The final processed dataset will be stored in a database or exported as a struct
 - Check logs for errors in data extraction or transformation.
 - Ensure input files are available and formatted correctly.
 - Verify database connectivity for data loading.
+
+This repository is dual licensed under the Open Government v3 & MIT. All code can outputs are subject to Crown Copyright.
