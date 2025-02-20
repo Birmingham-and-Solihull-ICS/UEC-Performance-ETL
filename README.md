@@ -1,25 +1,54 @@
-# BSOL sample project folder
+# UEC Performance ETL Process
 
-This git repository contains a shell that should be used as the default structure for new projects
-in the analytical team.  It won't fit all circumstances perfectly, and you can make changes and issue a 
-pull request for new features / changes.
+## Overview
+This repository contains R scripts designed to extract, transform, and load (ETL) data related to daily Urgent and Emergency Care (UEC) performance. The scripts systematically process datasets from multiple sources, including hospital discharge reports, virtual ward data, and site reports, to generate a unified dataset for analysis.
 
-The aim of this template is two-fold: firstly to give a common structure for analytical projects to aid
-reproducibility, secondly to allow for additional security settings as default to prevent accidental upload of files that should not be committed to Git and GitHub.
+## Workflow
+The ETL process follows a structured pipeline:
 
-__Please update/replace this README file with one relevant to your project__
+1. **Data Extraction**  
+   - Extracts data from various sources such as BCHC, UHB, WMAS, and virtual wards.  
+   - Handles multiple structured files for daily and weekly performance metrics.  
 
-## To use this template, please use the following practises:
+2. **Data Transformation**  
+   - Cleanses and standardizes extracted data.  
+   - Merges relevant datasets to create a comprehensive UEC performance dataset.  
+   - Applies transformations necessary for analytics and reporting.  
 
-* Put any data files in the `data` folder.  This folder is explicitly named in the .gitignore file.  A further layer of security is that all xls, xlsx, csv and pdf files are also explicit ignored in the whole folder as well.  ___If you need to commit one of these files, you must use the `-f` (force) command in `commit`, but you must be sure there is no identifiable data.__
-* Save any documentation, images of support files in the `assets` folder.  This does not mean you should avoid commenting your code, but if you have an operating procedure or supporting documents, add them to this folder.
-* Please save all outputs: data, formatted tables, graphs etc. in the output folder.  This is also implicitly ignored by git, but you can use the `-f` (force) command in `commit` to add any you wish to publish to github.
+3. **Data Loading**  
+   - Loads transformed data into a database or reporting system.  
+   - Ensures data integrity and logs execution status.  
 
+## Script Descriptions
 
-### Please also consider the following:
-* Linting your code.  This is a formatting process that follows a rule set.  We broadly encourage the tidyverse standard, and recommend the `lintr` package.
-* Comment your code to make sure others can follow.
-* Consider your naming conventions: we recommend `snake case` where spaces are replaced by underscores and no capitals are use. E.g. `outpatient_referral_data`
+| Script Name                      | Description |
+|----------------------------------|-------------|
+| **01_Download_SPT_files.R**      | Downloads required data files from external sources. |
+| **02_Extract_ADA.R**             | Extracts data related to Admissions, Discharges, and Activity. |
+| **03_Extract_BWCH_Weekly_Sitrep.R** | Processes weekly situation reports for Birmingham Women's and Children's Hospital. |
+| **04_Extract_MH_Daily_Sitrep.R** | Extracts daily Mental Health site report data. |
+| **05_Extract_UHB_Daily_Sitrep.R** | Extracts daily site report data from UHB Trust. |
+| **06_Extract_BCHC_UCR.R**        | Extracts data from BCHC Urgent Community Response. |
+| **07_Extract_UHB_Discharges.R**  | Extracts daily hospital discharge data from UHB. |
+| **08_Extract_Virtual_Wards.R**   | Extracts virtual ward activity data. |
+| **09_Extract_WMAS.R**            | Extracts West Midlands Ambulance Service (WMAS) data. |
+| **10_Load_Data_Into_DB.R**       | Loads the final transformed dataset into the database. |
+| **RUN_MASTER_SCRIPT.R**          | Executes the full ETL pipeline in sequential order. |
 
+## Execution Instructions
+1. Ensure all required dependencies (R packages) are installed.
+2. Modify any file paths or database connection settings in the scripts if necessary.
+3. Run **RUN_MASTER_SCRIPT.R** to execute the full ETL process.
 
-This repository is dual licensed under the [Open Government v3]([https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) & MIT. All code can outputs are subject to Crown Copyright.
+## Requirements
+- R (Latest Version)
+- Required Libraries: `tidyverse`, `readr`, `DBI`, `RSQLite`, etc.
+- Database credentials (if applicable)
+
+## Output
+The final processed dataset will be stored in a database or exported as a structured file for reporting and analysis.
+
+## Troubleshooting
+- Check logs for errors in data extraction or transformation.
+- Ensure input files are available and formatted correctly.
+- Verify database connectivity for data loading.
